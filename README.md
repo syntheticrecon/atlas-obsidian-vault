@@ -87,7 +87,7 @@ Or ask Claude: "Maintain the wiki" — the `vault-maintain` skill handles it wit
 
 ## Full documentation
 
-- [`howto.md`](howto.md) — comprehensive human-facing guide
+- [`TUTORIAL.md`](TUTORIAL.md) — comprehensive human-facing guide
 - [`AGENTS.md`](AGENTS.md) — agent-facing schema (CLAUDE.md symlinks to it)
 - [`methodology/`](methodology/) — Karpathy's LLM-wiki thread and canonical pattern docs
 - [`tests/README.md`](tests/README.md) — test suite documentation

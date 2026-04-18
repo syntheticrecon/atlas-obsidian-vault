@@ -189,7 +189,7 @@ def check_symlink():
 
 def check_required_files():
     required = [
-        "AGENTS.md", "index.md", "log.md", "hot.md", "howto.md",
+        "AGENTS.md", "index.md", "log.md", "hot.md", "TUTORIAL.md",
         "raw/.manifest.json", ".obsidian/appearance.json",
         ".obsidian/snippets/wiki-callouts.css",
         "bin/vault-health.sh", "bin/cross-linker.sh", "bin/yt-ingest.sh",

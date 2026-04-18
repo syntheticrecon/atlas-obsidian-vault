@@ -27,7 +27,7 @@ This vault is an LLM-maintained research wiki. You curate sources
 and ask questions. The LLM handles ingestion, summarization, cross-
 linking, and index/log upkeep. The wiki compounds over time.
 
-Full reference: howto.md (or AGENTS.md for the agent-facing schema).
+Full reference: TUTORIAL.md (or AGENTS.md for the agent-facing schema).
 
 ─────────────────────────────────────────────────────────────────
 STEP 1 — Customize for your domain
@@ -123,7 +123,7 @@ Quick reference
   tests/test.sh                Full validation (if working on template)
 
 Agent-facing docs:    AGENTS.md (symlinked as CLAUDE.md)
-Human-facing docs:    howto.md
+Human-facing docs:    TUTORIAL.md
 Session cache:        hot.md
 Navigation hub:       index.md
 Operation history:    log.md

@@ -11,7 +11,7 @@ Navigation hub for the research wiki. Updated after every ingest or significant 
 | Page | Purpose |
 |------|---------|
 | [[hot]] | Session continuity cache — read first every session |
-| [[howto]] | Full guide to how this vault works |
+| [[TUTORIAL]] | Full guide to how this vault works |
 | [[log]] | Chronological record of all vault operations |
 
 ## Sources

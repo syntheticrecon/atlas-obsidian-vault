@@ -23,9 +23,9 @@ The `check-schema-sync.py` test catches drift between these three.
 
 ## Read First
 
-- `methodology/llm-wiki.md`: canonical pattern for ingest, query, and wiki maintenance.
-- `methodology/2026-04-02T204221.000Z - Thread by @karpathy.md`: practical workflow notes, especially one-by-one ingest with the human in the loop.
-- `methodology/kepanoobsidian-skills Agent skills for Obsidian. Teach your agent to use Markdown, Bases, JSON Canvas, and use the CLI..md`: what the Obsidian skills are for.
+- `methodology/llm-wiki.md`: canonical pattern for ingest, query, and wiki maintenance. Links to the original gist.
+- `methodology/karpathy-thread.md`: practical workflow notes on staged autonomy and one-at-a-time ingest.
+- `methodology/obsidian-skills.md`: the Obsidian-native skills this template vendors.
 
 ## Working Model
 

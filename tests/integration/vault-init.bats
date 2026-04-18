@@ -49,7 +49,7 @@ teardown() {
   "$VAULT_INIT" "$TEST_VAULT" >/dev/null
   [ -f "$TEST_VAULT/AGENTS.md" ]
   [ -f "$TEST_VAULT/hot.md" ]
-  [ -f "$TEST_VAULT/howto.md" ]
+  [ -f "$TEST_VAULT/TUTORIAL.md" ]
   [ -f "$TEST_VAULT/index.md" ]
   [ -f "$TEST_VAULT/log.md" ]
   [ -f "$TEST_VAULT/Vault Health.base" ]

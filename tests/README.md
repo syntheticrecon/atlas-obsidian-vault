@@ -31,7 +31,7 @@ Required (most checks will skip gracefully if missing):
 
 Validates:
 
-- **Required files exist**: AGENTS.md, CLAUDE.md symlink, hot.md, howto.md, index.md, log.md, manifest, appearance snippet, CSS, all 3 bin/ scripts, Vault Health.base
+- **Required files exist**: AGENTS.md, CLAUDE.md symlink, hot.md, TUTORIAL.md, index.md, log.md, manifest, appearance snippet, CSS, all 3 bin/ scripts, Vault Health.base
 - **Symlink integrity**: CLAUDE.md → AGENTS.md
 - **CSS snippet enabled**: `wiki-callouts` in `.obsidian/appearance.json`
 - **Scripts executable**: `chmod +x` applied to bin/*.sh
@@ -51,7 +51,7 @@ Schema definitions live in `tests/schemas/`:
 
 ### Layer 2b: Cross-cutting lint
 
-- **`validate-wikilinks.py`** — scans every `.md` file (incl. docs like `AGENTS.md`, `howto.md`, `index.md`, `hot.md`), strips fenced code blocks and inline code, and verifies every `[[wikilink]]` resolves to a page or alias. Folder-style links (`[[raw/]]`) resolve to existing folders.
+- **`validate-wikilinks.py`** — scans every `.md` file (incl. docs like `AGENTS.md`, `TUTORIAL.md`, `index.md`, `hot.md`), strips fenced code blocks and inline code, and verifies every `[[wikilink]]` resolves to a page or alias. Folder-style links (`[[raw/]]`) resolve to existing folders.
 - **`check-schema-sync.py`** — parses the "Recommended Frontmatter Schema" table in `AGENTS.md` and cross-checks it against `frontmatter.schema.json` and each template. Catches drift between prose, code, and scaffold.
 - **`check-callouts.py`** — enforces that every custom callout (`> [!name]`) used in markdown has a corresponding `.callout[data-callout="name"]` rule in `.obsidian/snippets/wiki-callouts.css`. Built-in Obsidian callouts are allowed without a rule. Reverse direction (CSS rule without usage) is a warning.
 
@@ -88,7 +88,7 @@ Schema definitions live in `tests/schemas/`:
 
 **`vault-init-diff.bats`** — template-drift detection:
 
-- Every verbatim-copied file (AGENTS.md, howto.md, templates, CSS, bin scripts, Vault Health.base, manifest, methodology) has an identical hash in the generated vault
+- Every verbatim-copied file (AGENTS.md, TUTORIAL.md, templates, CSS, bin scripts, Vault Health.base, manifest, methodology) has an identical hash in the generated vault
 - Generated files (hot.md, index.md, log.md) contain all required sections
 - CLAUDE.md symlink resolves correctly
 - `.claude/settings.json`, `skills-lock.json`, wiki content folders are NOT copied

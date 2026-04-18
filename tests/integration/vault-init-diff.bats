@@ -28,8 +28,8 @@ hash_of() {
   [ "$(hash_of "$VAULT_TEMPLATE/AGENTS.md")" = "$(hash_of "$TEST_VAULT/AGENTS.md")" ]
 }
 
-@test "diff: howto.md matches template" {
-  [ "$(hash_of "$VAULT_TEMPLATE/howto.md")" = "$(hash_of "$TEST_VAULT/howto.md")" ]
+@test "diff: TUTORIAL.md matches template" {
+  [ "$(hash_of "$VAULT_TEMPLATE/TUTORIAL.md")" = "$(hash_of "$TEST_VAULT/TUTORIAL.md")" ]
 }
 
 @test "diff: all 5 templates match template verbatim" {
