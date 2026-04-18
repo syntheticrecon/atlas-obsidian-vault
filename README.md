@@ -36,16 +36,22 @@ An Obsidian vault template where an LLM agent does the bookkeeping of a research
 
 ## Quickstart — Claude Code
 
-1. **Clone the template**
-   ```bash
-   git clone https://github.com/syntheticrecon/atlas-obsidian-vault.git my-vault
-   cd my-vault
-   ```
+1. **Create your vault from this template**
 
-2. **Disconnect from upstream history** (your vault owns its own history)
-   ```bash
-   rm -rf .git && git init && git add . && git commit -m "Initial vault"
-   ```
+   Two paths, same result:
+
+   - **On GitHub**: click the green **"Use this template"** button at the top of the [repo page](https://github.com/syntheticrecon/atlas-obsidian-vault) → **"Create a new repository"**. This gives you a fresh repo with no git history, then clone it:
+     ```bash
+     git clone https://github.com/<you>/<your-repo>.git my-vault
+     cd my-vault
+     ```
+
+   - **Locally without GitHub**: straight `git clone` and strip the upstream history:
+     ```bash
+     git clone https://github.com/syntheticrecon/atlas-obsidian-vault.git my-vault
+     cd my-vault
+     rm -rf .git && git init && git add . && git commit -m "Initial vault"
+     ```
 
 3. **Install required tools** (most are optional; see [Tools & dependencies](#tools--dependencies))
    ```bash
