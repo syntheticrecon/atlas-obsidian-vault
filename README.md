@@ -92,6 +92,10 @@ Or ask Claude: "Maintain the wiki" — the `vault-maintain` skill handles it wit
 - [`methodology/`](methodology/) — Karpathy's LLM-wiki thread and canonical pattern docs
 - [`tests/README.md`](tests/README.md) — test suite documentation
 
+## Platform notes
+
+**Windows**: this template uses symlinks for `CLAUDE.md → AGENTS.md` and `.claude/skills/* → .agents/skills/*`. Windows requires [Developer Mode enabled](https://learn.microsoft.com/en-us/windows/apps/get-started/enable-your-device-for-development) or a `git config --global core.symlinks true` + admin shell, or symlinks become plain text files and skill discovery breaks. macOS and Linux work out of the box.
+
 ## Required tools
 
 **Required:**
