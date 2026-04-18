@@ -29,9 +29,11 @@ auth.json
 .claude/settings.local.json
 
 # Vault content is user-generated and NOT part of the template.
+# Leading slashes anchor to repo root so test fixtures with similar paths
+# (e.g., tests/fixtures/ingest-simulation/expected/Sources/) still get tracked.
 # If you fork this repo to use as your personal vault, delete these lines.
-Sources/
-Concepts/
-Entities/
-Questions/
-Outputs/
+/Sources/
+/Concepts/
+/Entities/
+/Questions/
+/Outputs/
