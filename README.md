@@ -1,134 +1,178 @@
-# LLM-Maintained Research Vault Template
+# Atlas — LLM-Maintained Research Vault
 
-An Obsidian vault template where an LLM agent maintains the wiki layer. You curate sources and ask questions; the agent handles the bookkeeping — summaries, cross-links, entity extraction, index and log upkeep. Based on [Karpathy's LLM-wiki pattern](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f), extended with patterns from five community implementations.
+An Obsidian vault template where an LLM agent does the bookkeeping of a research wiki, so you can focus on curating sources and asking good questions. Based on [Andrej Karpathy's LLM-wiki pattern](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f), extended with patterns from five community implementations.
 
-## What this gives you
+**The core idea**: the tedious part of maintaining a knowledge base isn't reading or thinking — it's bookkeeping (cross-references, summaries, index upkeep, reconciling contradictions). LLMs don't experience tedium and can touch 15 files in one pass. The human curates what goes in; the agent handles the synthesis and upkeep. The wiki compounds: every new source strengthens existing pages, every answered query is filed back as a permanent page.
 
-- **Schema** (`AGENTS.md` / `CLAUDE.md`): canonical rules for ingest, query, lint, page conventions, frontmatter, cross-linking, provenance, confidence, source conflicts, page lifecycle, archival, and crystallization.
-- **Skills** (`.agents/skills/`): triggerable workflows the LLM invokes by name — `vault-ingest`, `vault-query`, `vault-review`, `vault-maintain`, `vault-init`.
-- **Scripts** (`bin/`): `vault-health.sh` (lint), `cross-linker.sh` (unlinked mentions), `stats.sh` (vault metrics), `yt-ingest.sh` (YouTube transcripts), `review.sh` (review queue), `quickstart.sh` (first-run walkthrough).
-- **Templates** (`_templates/`): scaffold pages for Source, Concept, Entity, Question, Output.
-- **Tests** (`tests/`): 70+ assertions covering schema validation, JSON parsing, shellcheck, bash portability, wikilink integrity, ingest invariants, vault-init drift, custom callouts CSS, schema sync.
-- **Obsidian config**: Bases, Canvas, Properties, Backlinks enabled; custom callouts styled (`contradiction`, `gap`, `key-insight`, `stale`); File Hider community plugin pre-configured to hide plumbing folders (`bin/`, `tests/`, `_templates/`, `AGENTS.md`) from the file explorer so the view stays focused on research content; Templates core plugin points to `_templates/`.
+---
 
-## Quickstart
+## What you get
 
-### 1. Clone this template
+- **Schema-first architecture.** `AGENTS.md` (symlinked to `CLAUDE.md`) defines every rule the agent follows: ingest, query, lint, page conventions, frontmatter, cross-linking, provenance, confidence, source conflicts, page lifecycle, archival, crystallization.
+- **Five vault-native skills** the LLM triggers by natural language:
+  - `vault-ingest` — drop a source, get a Sources/Concepts/Entities network
+  - `vault-query` — research questions synthesized with citations, optionally filed as Outputs
+  - `vault-review` — walk the `explored: false` human-review queue with judgment
+  - `vault-maintain` — lint, crystallize, promote lifecycle, archive
+  - `vault-init` — scaffold a new vault from this template
+- **Obsidian-native agent skills** vendored from [kepano/obsidian-skills](https://github.com/kepano/obsidian-skills): markdown, bases, canvas, CLI, defuddle.
+- **Six utility scripts** in `bin/`: quickstart walkthrough, severity-tiered lint, unlinked-mention finder, vault stats, review queue processor, yt-dlp wrapper.
+- **Five page templates** wired into Obsidian's Templates plugin.
+- **Custom CSS callouts** for contradictions, gaps, key insights, stale claims.
+- **Vault Health dashboard** (`.base` file, 8 views) powered by Obsidian Bases.
+- **File Hider plugin** pre-configured to hide plumbing folders from the file explorer.
+- **Full test suite** — shellcheck, JSON/YAML schemas, bats integration tests, template-drift detection, wikilink validation, schema-sync, custom callout consistency. ~70 assertions, ~12s to run.
 
-```bash
-git clone https://github.com/<you>/<this-repo>.git my-research-vault
-cd my-research-vault
-```
+---
 
-Alternatively, fork the repo on GitHub and clone your fork.
+## Who it's for
 
-### 2. Make it yours
+- Researchers who want a personal knowledge base that doesn't rot
+- Anyone who's tried and abandoned a wiki because maintenance grew faster than value
+- Teams using an LLM (Claude, Codex, opencode) as a research collaborator
+- Power users of Obsidian who want structure without a plugin-heavy setup
 
-Remove the link to the upstream template's history (your vault owns its own history):
+---
 
-```bash
-rm -rf .git
-git init
-git add .
-git commit -m "Initial vault from template"
-```
+## Quickstart — Claude Code
 
-Open `AGENTS.md` and customize the **Domain Customization** section for your domain (ML papers, recipes, product docs, etc.).
+1. **Clone the template**
+   ```bash
+   git clone https://github.com/syntheticrecon/atlas-obsidian-vault.git my-vault
+   cd my-vault
+   ```
 
-### 3. Run the guided walkthrough
+2. **Disconnect from upstream history** (your vault owns its own history)
+   ```bash
+   rm -rf .git && git init && git add . && git commit -m "Initial vault"
+   ```
 
-```bash
-bin/quickstart.sh
-```
+3. **Install required tools** (most are optional; see [Tools & dependencies](#tools--dependencies))
+   ```bash
+   brew install yt-dlp jq ripgrep         # core utilities
+   pip install pyyaml jsonschema           # for the test suite (optional)
+   ```
 
-### 4. Ingest your first source
+4. **Open the guided walkthrough**
+   ```bash
+   bin/quickstart.sh
+   ```
 
-```bash
-# Put any source in raw/:
-cp ~/Downloads/interesting-paper.md raw/
-# or for a YouTube video:
-bin/yt-ingest.sh "https://youtube.com/watch?v=..."
+5. **Customize for your domain** — open `AGENTS.md`, find the *Domain Customization* section near the top, adjust page types / frontmatter fields / entity subtypes for your research domain (papers? recipes? product docs?).
 
-# Then ask Claude/your LLM agent:
-#   "Ingest the new source in raw/"
-```
+6. **Drop your first source and ingest**
+   ```bash
+   # Web article:
+   cp ~/Downloads/article.md raw/
+   # YouTube:
+   bin/yt-ingest.sh "https://youtube.com/watch?v=..."
+   ```
+   Then ask Claude: *"ingest the new source in raw/"* — the `vault-ingest` skill auto-triggers.
 
-The `vault-ingest` skill takes over — reads the source, creates `Sources/<Title>.md`, extracts Concepts/Entities, cross-links everything, updates index and log.
+7. **Review what the agent created** — every AI-created page starts with `explored: false`.
+   ```
+   ask Claude: "review the queue"
+   # or, bash menu mode:
+   bin/review.sh
+   ```
 
-### 5. Review what the agent created
+Claude Code auto-discovers skills from `.claude/skills/` (symlinks to `.agents/skills/`). `CLAUDE.md` → `AGENTS.md` is read automatically. No additional configuration needed.
 
-```bash
-# In Claude: "Review the queue"
-# or for a bash menu:
-bin/review.sh
-```
+---
 
-Every AI-created page starts with `explored: false`. You flip it to `true` after reviewing. This is the staged-autonomy trust curve.
+## Quickstart — opencode
 
-### 6. Query the wiki
+Atlas skills follow the [Agent Skills specification](https://agentskills.io/specification), so they work with opencode too.
 
-Once you have a few sources ingested, ask research questions:
+1. **Clone the template** (same as above)
 
-- "What do my sources say about X?"
-- "Where do they disagree?"
-- "Summarize Y and cite every source."
+2. **Make skills discoverable**. opencode auto-discovers skills from `~/.opencode/skills/` globally and from `.opencode/skills/` per-project. The skills live in `.agents/skills/`; expose them to opencode by symlinking:
 
-If the answer is worth keeping, ask: "File this as an Output." The answer becomes a permanent page that future queries reuse — this is the compounding mechanism.
+   ```bash
+   mkdir -p .opencode/skills
+   for skill in .agents/skills/*/; do
+     name=$(basename "$skill")
+     ln -sf "../../.agents/skills/$name" ".opencode/skills/$name"
+   done
+   ```
 
-### 7. Weekly maintenance
+   (The template already does this for Claude Code at `.claude/skills/`.)
 
-```bash
-bin/stats.sh            # vault metrics
-bin/vault-health.sh     # severity-tiered lint
-bin/cross-linker.sh     # find unlinked mentions
-```
+3. **Point opencode at AGENTS.md**. opencode reads `AGENTS.md` (or `CLAUDE.md`) automatically as the project instructions file.
 
-Or ask Claude: "Maintain the wiki" — the `vault-maintain` skill handles it with judgment.
+4. **Run the guided walkthrough and customize**, same as the Claude Code flow:
+   ```bash
+   bin/quickstart.sh
+   # edit AGENTS.md → Domain Customization section
+   ```
 
-## Full documentation
+5. **Ingest your first source** and trigger skills by natural language the same way.
 
-- [`TUTORIAL.md`](TUTORIAL.md) — comprehensive human-facing guide
-- [`AGENTS.md`](AGENTS.md) — agent-facing schema (CLAUDE.md symlinks to it)
-- [`methodology/`](methodology/) — Karpathy's LLM-wiki thread and canonical pattern docs
-- [`tests/README.md`](tests/README.md) — test suite documentation
+---
+
+## Tools & dependencies
+
+### Required for ingestion and review
+
+| Tool | Install | Why |
+|------|---------|-----|
+| [Obsidian](https://obsidian.md) | [download](https://obsidian.md/download) | The vault viewer |
+| [Claude Code](https://claude.com/claude-code) or [opencode](https://github.com/opencode-ai/opencode) | see their docs | The LLM agent driving the workflows |
+| `git` | OS default | Clone + version control the vault |
+| Bash 3.2+ | OS default (macOS ships 3.2, Linux usually 5+) | Scripts in `bin/` |
+
+### Recommended
+
+| Tool | Install | Used for |
+|------|---------|----------|
+| [`yt-dlp`](https://github.com/yt-dlp/yt-dlp) | `brew install yt-dlp` | `bin/yt-ingest.sh` — YouTube transcripts |
+| [`ripgrep`](https://github.com/BurntSushi/ripgrep) | `brew install ripgrep` | Fast search across the vault |
+| [`jq`](https://jqlang.github.io/jq/) | `brew install jq` | Manifest queries, test suite |
+| [Defuddle](https://github.com/kepano/defuddle) | `npm install -g defuddle` | Clean web pages to markdown before ingest |
+| [agent-browser](https://github.com/vercel-labs/agent-browser) | `brew install agent-browser` then `agent-browser install` | Programmatic web capture |
+| [`qmd`](https://github.com/tobi/qmd) | see repo | Local search at 100+ pages (optional) |
+
+### Optional — for running the test suite
+
+| Tool | Install | Why |
+|------|---------|-----|
+| [`shellcheck`](https://github.com/koalaman/shellcheck) | `brew install shellcheck` | Static bash analysis |
+| [`bats-core`](https://github.com/bats-core/bats-core) | `brew install bats-core` | Integration tests |
+| Python 3 + PyYAML + jsonschema | `pip install pyyaml jsonschema` | Schema and frontmatter validation |
+
+Run `tests/test.sh` to exercise everything; `tests/test.sh --fast` skips bats for a <1s run.
+
+### Obsidian community plugins (ships with)
+
+- [File Hider](https://github.com/Oliver-Akins/File-Hider) — hides `bin/`, `_templates/`, `tests/`, `AGENTS.md`, `README.md` from the file explorer so your view stays focused on research content. Uninstall it if you want full visibility.
+
+---
+
+## Documentation
+
+- **[TUTORIAL.md](TUTORIAL.md)** — comprehensive human-facing guide (650+ lines, covers architecture, page types, workflows, frontmatter, cross-linking, provenance, source conflicts, lifecycle, rhythm, scaling, pitfalls, philosophy)
+- **[AGENTS.md](AGENTS.md)** — agent-facing schema (the LLM reads this automatically)
+- **[methodology/](methodology/)** — reference stubs linking to Karpathy's gist, X thread, and kepano's obsidian-skills
+- **[tests/README.md](tests/README.md)** — test suite documentation
+- **Skills**: `.agents/skills/vault-*/SKILL.md` — read any skill to see exactly what it does
+
+---
 
 ## Platform notes
 
-**Windows**: this template uses symlinks for `CLAUDE.md → AGENTS.md` and `.claude/skills/* → .agents/skills/*`. Windows requires [Developer Mode enabled](https://learn.microsoft.com/en-us/windows/apps/get-started/enable-your-device-for-development) or a `git config --global core.symlinks true` + admin shell, or symlinks become plain text files and skill discovery breaks. macOS and Linux work out of the box.
+**Windows users**: this template uses symlinks (`CLAUDE.md → AGENTS.md` and `.claude/skills/* → .agents/skills/*`). Windows requires [Developer Mode enabled](https://learn.microsoft.com/en-us/windows/apps/get-started/enable-your-device-for-development) or `git config --global core.symlinks true` run in an admin shell. Otherwise symlinks are checked out as text files and skill discovery breaks. macOS and Linux work out of the box.
 
-## Required tools
-
-**Required:**
-- [Obsidian](https://obsidian.md) — the viewer
-- Bash 3.2+ (macOS default) or Bash 4+
-
-**Recommended:**
-- [`yt-dlp`](https://github.com/yt-dlp/yt-dlp) — video source ingest (`brew install yt-dlp`)
-- [`rg` (ripgrep)](https://github.com/BurntSushi/ripgrep) — fast vault search (`brew install ripgrep`)
-- [`jq`](https://jqlang.github.io/jq/) — JSON manipulation (`brew install jq`)
-- [`defuddle`](https://github.com/kepano/defuddle) — clean web pages to markdown
-- [`agent-browser`](https://github.com/vercel-labs/agent-browser) — browser automation for source capture
-
-**For running tests:**
-- `python3` with `pyyaml` and `jsonschema` (`pip install pyyaml jsonschema`)
-- `shellcheck` (`brew install shellcheck`)
-- `bats-core` (`brew install bats-core`)
-
-## Running the test suite
-
-```bash
-tests/test.sh           # full suite (~12 seconds)
-tests/test.sh --fast    # static + schema only (<1 second)
-```
-
-Tests are mainly useful if you're modifying the template itself (evolving the schema, adding skills, etc.). They're not required for day-to-day vault use.
+---
 
 ## Credits
 
-- [Karpathy's LLM-wiki thread](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) — the foundational pattern
-- [@kepano's obsidian-skills](https://github.com/kepano/obsidian-skills) — the Obsidian-native agent skills
+- [Andrej Karpathy](https://x.com/karpathy) — the LLM-wiki pattern this template implements ([original gist](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f), [X thread](https://x.com/karpathy/status/2039805659525644595))
+- [@kepano](https://github.com/kepano) — [obsidian-skills](https://github.com/kepano/obsidian-skills) (vendored as core Obsidian agent skills)
 - [vercel-labs/agent-browser](https://github.com/vercel-labs/agent-browser) — web source capture
-- Community implementations studied: [second-brain](https://github.com/NicholasSpisak/second-brain), [claude-obsidian](https://github.com/AgriciDaniel/claude-obsidian), [obsidian-wiki](https://github.com/Ar9av/obsidian-wiki), [llm-wikid](https://github.com/shannhk/llm-wikid), [llm-knowledge-base-template](https://github.com/zerowing113/llm-knowledge-base-template)
+- [Oliver Akins](https://github.com/Oliver-Akins) — [File Hider](https://github.com/Oliver-Akins/File-Hider)
+- Community implementations studied during design: [second-brain](https://github.com/NicholasSpisak/second-brain), [claude-obsidian](https://github.com/AgriciDaniel/claude-obsidian), [obsidian-wiki](https://github.com/Ar9av/obsidian-wiki), [llm-wikid](https://github.com/shannhk/llm-wikid), [llm-knowledge-base-template](https://github.com/zerowing113/llm-knowledge-base-template)
+
+---
 
 ## License
 
