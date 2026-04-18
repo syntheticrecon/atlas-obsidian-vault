@@ -1,0 +1,67 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Wiki Page Frontmatter Schemas",
+  "description": "One schema per wiki page type. Validator picks the right one based on folder.",
+  "definitions": {
+    "Source": {
+      "type": "object",
+      "required": ["type", "explored"],
+      "additionalProperties": true,
+      "properties": {
+        "source_file": {"type": "string"},
+        "url": {"type": "string"},
+        "date_published": {"type": ["string", "null"]},
+        "date_ingested": {"type": ["string", "null"]},
+        "type": {"type": "string", "enum": ["article", "paper", "thread", "book", "video", "transcript", ""]},
+        "explored": {"type": "boolean"},
+        "title": {"type": "string"},
+        "channel": {"type": "string"},
+        "upload_date": {"type": ["string", "integer", "null"]},
+        "duration": {"type": ["string", "integer", "null"]},
+        "video_id": {"type": "string"}
+      }
+    },
+    "Concept": {
+      "type": "object",
+      "required": ["status", "confidence", "explored"],
+      "additionalProperties": true,
+      "properties": {
+        "status": {"type": "string", "enum": ["seed", "developing", "mature", "evergreen", "superseded"]},
+        "confidence": {"type": "string", "enum": ["high", "medium", "low"]},
+        "source_count": {"type": "integer", "minimum": 0},
+        "aliases": {"type": "array", "items": {"type": "string"}},
+        "explored": {"type": "boolean"}
+      }
+    },
+    "Entity": {
+      "type": "object",
+      "required": ["type", "status", "explored"],
+      "additionalProperties": true,
+      "properties": {
+        "type": {"type": "string", "enum": ["person", "org", "product", "tool", "text", "place", ""]},
+        "status": {"type": "string", "enum": ["seed", "developing", "mature", "evergreen", "superseded"]},
+        "aliases": {"type": "array", "items": {"type": "string"}},
+        "explored": {"type": "boolean"}
+      }
+    },
+    "Question": {
+      "type": "object",
+      "required": ["status"],
+      "additionalProperties": true,
+      "properties": {
+        "status": {"type": "string", "enum": ["open", "investigating", "resolved"]},
+        "raised_by": {"type": ["string", "array", "null"]}
+      }
+    },
+    "Output": {
+      "type": "object",
+      "required": ["status"],
+      "additionalProperties": true,
+      "properties": {
+        "query": {"type": "string"},
+        "status": {"type": "string", "enum": ["current", "superseded", "draft"]},
+        "created": {"type": ["string", "null"]}
+      }
+    }
+  }
+}

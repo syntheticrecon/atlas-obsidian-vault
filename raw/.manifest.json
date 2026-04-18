@@ -1,0 +1,5 @@
+{
+  "version": 1,
+  "description": "Tracks raw source files and their wiki derivatives. Check before ingest to skip unchanged sources. Schema per entry: sha256 (content hash), ingested_at (ISO timestamp), wiki_pages (array of paths created/updated), status (current|updated|superseded).",
+  "sources": {}
+}

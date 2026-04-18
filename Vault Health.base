@@ -1,0 +1,111 @@
+filters:
+  or:
+    - file.inFolder("Sources")
+    - file.inFolder("Concepts")
+    - file.inFolder("Entities")
+    - file.inFolder("Questions")
+    - file.inFolder("Outputs")
+formulas:
+  page_type: if(file.folder.contains("Sources"), "Source", if(file.folder.contains("Concepts"), "Concept", if(file.folder.contains("Entities"), "Entity", if(file.folder.contains("Questions"), "Question", if(file.folder.contains("Outputs"), "Output", "Other")))))
+  needs_review: if(explored == false, "Needs Review", "Reviewed")
+properties:
+  file.name:
+    displayName: Page
+  file.folder:
+    displayName: Folder
+  formula.page_type:
+    displayName: Type
+  status:
+    displayName: Status
+  confidence:
+    displayName: Confidence
+  explored:
+    displayName: Explored
+  formula.needs_review:
+    displayName: Review State
+views:
+  - type: table
+    name: All Wiki Pages
+    order:
+      - file.name
+      - formula.page_type
+      - status
+      - confidence
+      - explored
+      - file.mtime
+  - type: table
+    name: Needs Human Review
+    filters:
+      and:
+        - explored == false
+    order:
+      - file.name
+      - formula.page_type
+      - status
+      - confidence
+      - file.mtime
+      - file.ctime
+  - type: table
+    name: By Status
+    groupBy:
+      property: status
+      direction: ASC
+    order:
+      - file.name
+      - formula.page_type
+      - confidence
+      - explored
+      - file.mtime
+  - type: table
+    name: By Type
+    groupBy:
+      property: formula.page_type
+      direction: ASC
+    order:
+      - file.name
+      - status
+      - confidence
+      - explored
+      - file.mtime
+  - type: table
+    name: By Folder
+    groupBy:
+      property: file.folder
+      direction: ASC
+    order:
+      - file.name
+      - status
+      - confidence
+      - explored
+      - file.mtime
+  - type: table
+    name: High Confidence Claims
+    filters:
+      and:
+        - confidence == "high"
+    order:
+      - file.name
+      - formula.page_type
+      - status
+      - file.mtime
+  - type: table
+    name: Seed Pages
+    filters:
+      and:
+        - status == "seed"
+    order:
+      - file.name
+      - formula.page_type
+      - confidence
+      - explored
+      - file.ctime
+  - type: table
+    name: Open Questions
+    filters:
+      and:
+        - file.inFolder("Questions")
+        - status == "open"
+    order:
+      - file.name
+      - status
+      - file.ctime

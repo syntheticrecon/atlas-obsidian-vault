@@ -1,0 +1,25 @@
+/* Research wiki custom callout styles */
+
+/* Contradiction — conflicting sources, red */
+.callout[data-callout="contradiction"] {
+  --callout-color: 220, 38, 38;
+  --callout-icon: lucide-swords;
+}
+
+/* Gap — missing data or coverage, amber */
+.callout[data-callout="gap"] {
+  --callout-color: 217, 119, 6;
+  --callout-icon: lucide-help-circle;
+}
+
+/* Key Insight — important findings, blue */
+.callout[data-callout="key-insight"] {
+  --callout-color: 37, 99, 235;
+  --callout-icon: lucide-lightbulb;
+}
+
+/* Stale — outdated information, gray */
+.callout[data-callout="stale"] {
+  --callout-color: 107, 114, 128;
+  --callout-icon: lucide-clock;
+}

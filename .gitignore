@@ -1,0 +1,37 @@
+raw/assets/.DS_Store
+.DS_Store
+
+# OS and editor junk
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Obsidian runtime state (machine-specific, not template content).
+# graph.json, app.json, appearance.json, core-plugins.json, community-plugins.json
+# are intentionally tracked — they're template defaults cloners inherit.
+.obsidian/workspace.json
+.obsidian/workspaces.json
+.obsidian/hotkeys.json
+.obsidian/cache
+.obsidian/plugins/*/data.json
+.trash/
+
+# agent-browser auth/session artifacts
+agent-browser-auth/
+agent-browser-state/
+*.agent-browser-state.json
+*.agent-browser-auth.json
+*.session.json
+auth.json
+
+# Per-session Claude Code settings (permission allowlist, etc.)
+.claude/settings.local.json
+
+# Vault content is user-generated and NOT part of the template.
+# If you fork this repo to use as your personal vault, delete these lines.
+Sources/
+Concepts/
+Entities/
+Questions/
+Outputs/

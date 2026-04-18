@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "sources": {
+    "raw/x.md": {
+      "sha256": "not-a-real-hash",
+      "ingested_at": "yesterday",
+      "wiki_pages": "should be an array",
+      "status": "unknown"
+    }
+  }
+}
