@@ -9,7 +9,7 @@ An Obsidian vault template where an LLM agent maintains the wiki layer. You cura
 - **Scripts** (`bin/`): `vault-health.sh` (lint), `cross-linker.sh` (unlinked mentions), `stats.sh` (vault metrics), `yt-ingest.sh` (YouTube transcripts), `review.sh` (review queue), `quickstart.sh` (first-run walkthrough).
 - **Templates** (`_templates/`): scaffold pages for Source, Concept, Entity, Question, Output.
 - **Tests** (`tests/`): 70+ assertions covering schema validation, JSON parsing, shellcheck, bash portability, wikilink integrity, ingest invariants, vault-init drift, custom callouts CSS, schema sync.
-- **Obsidian config**: Bases, Canvas, Properties, Backlinks enabled; custom callouts styled (`contradiction`, `gap`, `key-insight`, `stale`).
+- **Obsidian config**: Bases, Canvas, Properties, Backlinks enabled; custom callouts styled (`contradiction`, `gap`, `key-insight`, `stale`); File Hider community plugin pre-configured to hide plumbing folders (`bin/`, `tests/`, `_templates/`, `AGENTS.md`) from the file explorer so the view stays focused on research content; Templates core plugin points to `_templates/`.
 
 ## Quickstart
 

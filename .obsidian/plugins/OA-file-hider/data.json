@@ -1,0 +1,10 @@
+{
+  "hidden": true,
+  "hiddenList": [
+    "bin",
+    "_templates",
+    "tests",
+    "AGENTS.md",
+    "README.md"
+  ]
+}
